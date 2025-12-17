@@ -1,9 +1,48 @@
 import base64
 import re
+import pyotp
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 
 HEX_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+
+def verify_totp_code(hex_seed: str, code: str, valid_window: int = 1) -> bool:
+    """
+    Verify TOTP code with ± time window tolerance
+    """
+
+    # 1. Convert hex seed to bytes
+    seed_bytes = bytes.fromhex(hex_seed)
+
+    # 2. Convert bytes to base32
+    base32_seed = base64.b32encode(seed_bytes).decode("utf-8")
+
+    # 3. Create TOTP object
+    totp = pyotp.TOTP(base32_seed)
+
+    # 4. Verify code with time tolerance (±30 seconds)
+    return totp.verify(code, valid_window=valid_window)
+
+
+def generate_totp_code(hex_seed: str) -> str:
+    """
+    Generate current TOTP code from hex seed
+    """
+
+    # 1. Convert hex seed to bytes
+    seed_bytes = bytes.fromhex(hex_seed)
+
+    # 2. Convert bytes to base32
+    base32_seed = base64.b32encode(seed_bytes).decode("utf-8")
+
+    # 3. Create TOTP object (SHA-1, 30s, 6 digits by default)
+    totp = pyotp.TOTP(base32_seed)
+
+    # 4. Generate current TOTP code
+    code = totp.now()
+
+    # 5. Return 6-digit code
+    return code
 
 def decrypt_seed(encrypted_seed_b64: str, private_key) -> str:
     """
