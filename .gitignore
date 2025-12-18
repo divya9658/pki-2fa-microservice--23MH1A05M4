@@ -1,14 +1,22 @@
-# Encrypted seed (DO NOT COMMIT)
+# -------------------------------
+# Sensitive files (DO NOT COMMIT)
+# -------------------------------
 encrypted_seed.txt
-cron/2fa-cron text eol=lf
 
-# Python cache
+# -------------------------------
+# Python cache files
+# -------------------------------
 __pycache__/
 *.pyc
+*.pyo
 
-# Environment files
+# -------------------------------
+# Environment / config files
+# -------------------------------
 .env
 
-# IDE files
+# -------------------------------
+# IDE / Editor files
+# -------------------------------
 .vscode/
 .idea/
