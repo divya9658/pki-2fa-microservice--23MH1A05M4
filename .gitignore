@@ -1,5 +1,6 @@
 # Encrypted seed (DO NOT COMMIT)
 encrypted_seed.txt
+cron/2fa-cron text eol=lf
 
 # Python cache
 __pycache__/
